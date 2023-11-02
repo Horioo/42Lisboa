@@ -1,21 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/26 22:22:54 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/18 13:05:17 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/02 13:33:26 by ajorge-p          #+#    #+#             */
+/*   Updated: 2023/10/19 12:10:05 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *s)
+#include "libft.h"
+
+char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	size_t	i;
+	char	*pos;
+	char	*s_change;
 
 	i = 0;
-	while (s[i])
+	pos = NULL;
+	s_change = (char *)s;
+	while ((int)i <= ft_strlen(s))
+	{
+		if (s_change[i] == (char)c)
+			pos = &s_change[i];
 		i++;
-	return (i);
+	}
+	return (pos);
 }
+/*
+int	main(void)
+{
+	printf("%s", ft_strrchr(((void*)0), '\0'));
+	//printf("\nabc%s", strrchr("42 Lisboa etc etc", '\0'));
+}
+*/

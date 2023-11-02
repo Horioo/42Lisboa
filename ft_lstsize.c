@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/26 22:22:54 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/18 13:05:17 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/18 15:01:07 by ajorge-p          #+#    #+#             */
+/*   Updated: 2023/10/18 15:03:49 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *s)
+#include "libft.h"
+
+int	ft_lstsize(t_list *new)
 {
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (new)
+	{
+		new = new->next;
 		i++;
+	}
 	return (i);
 }

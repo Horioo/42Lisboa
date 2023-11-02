@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/26 22:22:54 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/18 13:05:17 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/16 16:04:19 by ajorge-p          #+#    #+#             */
+/*   Updated: 2023/10/18 12:57:55 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *s)
+#include "libft.h"
+
+char	*ft_strdup(const char *s)
 {
-	int	i;
+	char	*str;
+	int		i;
 
 	i = 0;
+	str = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (str == NULL)
+		return (NULL);
 	while (s[i])
+	{
+		str[i] = s[i];
 		i++;
-	return (i);
+	}
+	str[i] = '\0';
+	return (str);
 }

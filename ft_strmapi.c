@@ -1,35 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 22:24:25 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/19 11:39:15 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/18 10:15:24 by ajorge-p          #+#    #+#             */
+/*   Updated: 2023/10/18 10:47:43 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int	i;
+	unsigned int	i;
+	char			*str;
 
 	i = 0;
-	while (i <= ft_strlen(s))
+	str = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (str == NULL)
+		return (NULL);
+	while (s[i] != '\0')
 	{
-		if (s[i] == (char)c)
-			return (&((char *)s)[i]);
-		else
-			i++;
+		str[i] = f(i, s[i]);
+		i++;
 	}
-	return (NULL);
+	str[i] = '\0';
+	return (str);
 }
 /*
+char	f(unsigned int i, char c)
+{
+	char str;
+	str = ft_toupper(c);
+	return (str);
+}
+
 int main()
 {
-	
+	char *str = "quero tudo em maisculas";
+	printf("%s\n", ft_strmapi(str, *f));	
 }
 */
-// Linha 21 - Vai returnar o Adress do Type Casting feito ao point s

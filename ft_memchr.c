@@ -1,35 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 22:24:25 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/19 11:39:15 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/16 10:52:57 by ajorge-p          #+#    #+#             */
+/*   Updated: 2023/10/16 11:30:26 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	int	i;
+	unsigned char	*s1;
+	unsigned char	c1;
+	size_t			i;
 
+	s1 = (unsigned char *)s;
+	c1 = (unsigned char)c;
 	i = 0;
-	while (i <= ft_strlen(s))
+	while (i < n)
 	{
-		if (s[i] == (char)c)
-			return (&((char *)s)[i]);
-		else
-			i++;
+		if (*s1 == c1)
+			return (s1);
+		s1++;
+		i++;
 	}
 	return (NULL);
 }
 /*
-int main()
+int	main(void)
 {
-	
+	const char	str[];
+	const char	ch;
+    char *ret;
+
+    str[] = "http://www.tutorialspoint.com";
+    ch = 'p';
+   ret = ft_memchr(str, ch, strlen(str));
+   printf("%s", ret);
 }
 */
-// Linha 21 - Vai returnar o Adress do Type Casting feito ao point s
