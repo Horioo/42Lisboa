@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:27:29 by ajorge-p          #+#    #+#             */
-/*   Updated: 2023/11/10 15:58:20 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:14:49 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
+	static char	buffer[FOPEN_MAX][BUFFER_SIZE + 1];
 	char		*line;
 	int			i;
 
 	i = 0;
 	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (FOPEN_MAX <= fd || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		while (i <= BUFFER_SIZE)
-		{
-			buffer[i] = '\0';
-			i++;
-		}
+		if (fd > 0 && FOPEN_MAX > fd)
+			while (buffer[fd][i])
+				buffer[fd][i++] = '\0';
 		return (NULL);
 	}
-	while (buffer[0] || read(fd, buffer, BUFFER_SIZE) > 0)
+	while (buffer[fd][0] || read(fd, buffer[fd], BUFFER_SIZE) > 0)
 	{
-		line = ft_join(line, buffer);
-		clear_buffer(buffer);
+		line = ft_join(line, buffer[fd]);
+		clear_buffer(buffer[fd]);
 		if (line[ft_strlen(line) - 1] == '\n')
 			return (line);
 	}
