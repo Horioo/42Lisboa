@@ -71,5 +71,3 @@ fclean: clean
 		@echo "$(NAME) deleted"
 
 re: fclean $(NAME)
-
-.PHONY:				start all clean fclean re
