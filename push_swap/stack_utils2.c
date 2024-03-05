@@ -6,17 +6,16 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:48:29 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/02/06 16:13:39 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:07:47 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/push_swap.h"
 
-
-t_stack_node *lst_remove_tail(t_stack_node **stack)
+t_stack_node	*lst_remove_tail(t_stack_node **stack)
 {
-	t_stack_node *tmp;
-	
+	t_stack_node	*tmp;
+
 	tmp = find_last(*stack);
 	tmp->prev->next = NULL;
 	tmp->next = NULL;
@@ -24,52 +23,57 @@ t_stack_node *lst_remove_tail(t_stack_node **stack)
 	return (tmp);
 }
 
-t_stack_node *lst_remove_head(t_stack_node **stack)
+t_stack_node	*lst_remove_head(t_stack_node **stack)
 {
-	t_stack_node *tmp;
+	t_stack_node	*tmp;
 
 	tmp = *stack;
 	*stack = (*stack)->next;
-	if(tmp->next)
+	if (tmp->next)
 		tmp->next->prev = NULL;
 	tmp->next = NULL;
 	tmp->prev = NULL;
 	return (tmp);
 }
 
-void lst_add_tail(t_stack_node **stack, t_stack_node *node)
+void	lst_add_tail(t_stack_node **stack, t_stack_node *node)
 {
-	t_stack_node *tail;
+	t_stack_node	*tail;
 
 	tail = find_last(*stack);
 	tail->next = node;
 	node->prev = tail;
 }
 
-void lst_add_head(t_stack_node **stack, t_stack_node *node)
+void	lst_add_head(t_stack_node **stack, t_stack_node *node)
 {
-	t_stack_node *head;
+	t_stack_node	*head;
 
 	head = *stack;
-	if(!head)
+	if (!head)
 		*stack = node;
 	else
-	{	
+	{
 		node->next = head;
 		head->prev = node;
 		*stack = node;
 	}
 }
 
-void	free_av(char **av)
+void	free_av(char **av, int ac)
 {
 	int	i;
 
-	i = 0;
-	while(av[i])
+	if (!av)
+		return ;
+	if (ac == 2)
 	{
-		free(av[i]);
-		i++;
+		i = 0;
+		while (av[i])
+		{
+			free(av[i]);
+			i++;
+		}
+		free(av);
 	}
-	free(av);
 }

@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:42:06 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/02/05 12:25:37 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:18:01 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sort_three(t_stack_node **a)
 {
-	t_stack_node *biggest_node;
+	t_stack_node	*biggest_node;
 
 	biggest_node = find_max(*a);
 	if (biggest_node == *a)

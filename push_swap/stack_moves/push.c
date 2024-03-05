@@ -6,17 +6,17 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:42:16 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/02/05 15:37:34 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:00:06 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void		push(t_stack_node **dst, t_stack_node **src)
+void	push(t_stack_node **dst, t_stack_node **src)
 {
-	t_stack_node *push_node;
+	t_stack_node	*push_node;
 
-	if(!*src)
+	if (!*src)
 		return ;
 	push_node = lst_remove_head(src);
 	lst_add_head(dst, push_node);

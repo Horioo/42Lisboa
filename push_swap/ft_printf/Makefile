@@ -19,7 +19,6 @@ all: $(NAME)
 
 $(NAME):	$(LIBFT) $(OBJ)
 		@ar rcs $(NAME) $(OBJ) libft/libft.a
-		@echo "$(NAME) created"
 
 $(LIBFT):
 		@make -C $(LIBFT_PATH)
@@ -31,7 +30,6 @@ clean:
 fclean: clean
 		@$(RM) $(NAME) ft_printf
 		@make -C $(LIBFT_PATH) fclean
-		@echo "$(NAME) and $(LIBFT_PATH) deleted"
 
 re: fclean all
 

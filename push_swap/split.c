@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:41:43 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/02/06 15:59:01 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:40:01 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	**ft_split(char *s, char c)
 
 	i = 0;
 	k = 0;
+	if (s[0] == c && s[1] == '\0')
+		return (NULL);
 	tabela = (char **)malloc(sizeof(char *) * (ft_cntwords(s, c) + 1));
 	if (tabela == NULL)
 		return (NULL);
@@ -80,11 +82,8 @@ char	**ft_split(char *s, char c)
 		j = i;
 		while (s[i] && s[i] != c)
 			i++;
-		if (i >= j)
-		{
-			tabela[k] = ft_strndup(s + j, i - j);
-			k++;
-		}
+		if (i >= j && s[j])
+			tabela[k++] = ft_strndup(s + j, i - j);
 	}
 	tabela[k] = NULL;
 	return (tabela);

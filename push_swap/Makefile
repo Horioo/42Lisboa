@@ -5,7 +5,7 @@ PRINTF = ft_printf/libftprintf.a
 INC = inc/
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -I
+CFLAGS = -Wall -Werror -Wextra -I #-fsanitize=address 
 RM = rm -f
 
 COMMANDS = stack_moves/push.c \
@@ -29,29 +29,31 @@ SRCS = $(COMMANDS) $(REST)
 OBJ = $(SRCS:.o=.c)
 
 start: 
-	make all
+	@make -s all
 
 $(LIBFT):
-	@make -C ./libft
+	@make -s -C ./libft
 
 $(PRINTF):
-	@make -C ./ft_printf
+	@make -s -C ./ft_printf
 
 all: $(NAME)
 
 $(NAME):		$(OBJ) $(LIBFT) $(PRINTF)
-				@ar rcs $(NAME) $(OBJ)
-				$(CC) $(CFLAGS) $(INC) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
+				ar rcs $(NAME) $(OBJ)
+				@$(CC) $(CFLAGS) $(INC) $(OBJ) $(PRINTF) $(LIBFT) -o $(NAME)
+				@echo "$(NAME) created"
 
 clean:
 
-	make clean -C ./libft
-	make clean -C ./ft_printf
+	@make clean -s -C ./libft
+	@make clean -s -C ./ft_printf
 
 fclean:			clean
-					$(RM) $(NAME)
-					$(RM) $(LIBFT)
-					$(RM) $(PRINTF)
+					@$(RM) $(NAME)
+					@$(RM) $(LIBFT)
+					@$(RM) $(PRINTF)
+					@echo "$(NAME) deleted"
 
 re:				fclean all
 

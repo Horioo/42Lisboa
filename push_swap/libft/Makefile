@@ -57,18 +57,15 @@ all: $(NAME)
 
 $(NAME):	$(OBJ)
 		@ar rcs $(NAME) $(OBJ)
-		@echo "$(NAME) created"
 
 bonus:	$(OBJ_BONUS)
 		@ar rcs $(NAME) $(OBJ_BONUS)
-		@echo "$(NAME) created"
 
 clean:
 		@$(RM) $(OBJ) $(OBJ_BONUS)
 
 fclean: clean
 		@$(RM) $(NAME)
-		@echo "$(NAME) deleted"
 
 re: fclean $(NAME)
 

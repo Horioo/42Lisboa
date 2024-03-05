@@ -6,32 +6,32 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:41:54 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/02/05 16:08:11 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:44:57 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/push_swap.h"
 
-void		set_target_b(t_stack_node *a, t_stack_node *b)
+void	set_target_b(t_stack_node *a, t_stack_node *b)
 {
 	t_stack_node	*current_a;
 	t_stack_node	*target_node;
 	long			best_match_index;
 
-	while(b)
+	while (b)
 	{
 		best_match_index = LONG_MAX;
 		current_a = a;
-		while(current_a)
+		while (current_a)
 		{
-			if(current_a->nbr > b->nbr && current_a->nbr < best_match_index)
+			if (current_a->nbr > b->nbr && current_a->nbr < best_match_index)
 			{
 				best_match_index = current_a->nbr;
 				target_node = current_a;
 			}
 			current_a = current_a->next;
 		}
-		if(best_match_index == LONG_MAX)
+		if (best_match_index == LONG_MAX)
 			b->target_node = find_min(a);
 		else
 			b->target_node = target_node;

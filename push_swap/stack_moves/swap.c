@@ -6,20 +6,20 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:42:03 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/01/30 16:21:47 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:45:49 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void		swap(t_stack_node **head)
+void	swap(t_stack_node **head)
 {
-	if(!*head || !(*head)->next)
-		return ;
-	int tmp_nbr;
-	int tmp_index;
-	t_stack_node *next;
+	int				tmp_nbr;
+	int				tmp_index;
+	t_stack_node	*next;
 
+	if (!*head || !(*head)->next)
+		return ;
 	next = (*head)->next;
 	tmp_nbr = (*head)->nbr;
 	tmp_index = (*head)->index;
