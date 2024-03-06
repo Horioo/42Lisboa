@@ -1,0 +1,41 @@
+Parsing:
+
+Program takes 1 parameter (game map)
+
+Verify if game_map ends with .ber - Feito
+Player cant go trough walls
+View on 2D(Top/Down or Profile)
+
+Map can only have 5 Characters: - Feito
+	0 - Empty Space
+	1 - Wall
+	C - Collectible
+	E - Map Exit
+	P - Player Starting POS
+
+Valid Map = 
+
+	Map with:
+		1 Exit
+		1 Starting Player Position
+		Atleast 1 Collectible
+	Return error if  nExit || nPlayerPos > 1 - Feito
+	Map has to be Rectangle - Feito
+	Map has to be closed by Walls (return error if false) - Feito
+	Check if valid path(flood_fill) - Work in Progress
+
+
+Return "Error\n" if error
+
+
+Player Movement:
+Keys: W A S D
+Directions: UP DOWN LEFT RIGHT
+Movements Counter Display on Shell
+
+Graphic:
+Image Display
+Smooth Window Management
+ESC Key has to close the Game Window
+Clicking the Cross has to close the game window and quit the program
+Image Usage Mandatory
