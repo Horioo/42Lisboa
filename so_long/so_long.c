@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 13:12:03 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/06 17:15:27 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:33:15 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int main(int ac, char **av)
 	if(ac == 2)
 	{
 		t_game *game;
-		t_vars vars;
 		int color = 0x00FF0000;
 		
 		//check if map is .ber
@@ -40,14 +39,12 @@ int main(int ac, char **av)
 		print_map(game->map);
 		printf("\n*************\nInit Window\n*************\n");
 		//Passar isto tudo para uma funcao a parte:    ft_init_visual(game);
-		vars.mlx = mlx_init();
-		vars.win = mlx_new_window(vars.mlx, game->size.x * 64, game->size.y * 64, "Hello World!");
 		printf("Teste\n");
-		put_map_visual(game, &vars);
-		mlx_string_put(vars.mlx, vars.win, 400, 10, color, "Steps Counter:");
-		mlx_hook(vars.win, 17, 0, close_game, &vars);
-		mlx_key_hook(vars.win, key_press, &vars);
-		mlx_loop(vars.mlx);
+		put_map_visual(game);
+		mlx_string_put(game->mlx, game->win, 400, 10, color, "Steps Counter:");
+		mlx_hook(game->win, 17, 0, close_game, game);
+		mlx_key_hook(game->win, key_press, game);
+		mlx_loop(game->mlx);
 		printf("\n*************\nEnd Game\n*************\n");
 	}
 }

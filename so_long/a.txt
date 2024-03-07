@@ -1,10 +1,10 @@
 Parsing:
 
-Program takes 1 parameter (game map)
+Program takes 1 parameter (game map) - Feito
 
 Verify if game_map ends with .ber - Feito
 Player cant go trough walls
-View on 2D(Top/Down or Profile)
+View on 2D(Top/Down or Profile) - Feito by Default
 
 Map can only have 5 Characters: - Feito
 	0 - Empty Space
@@ -22,20 +22,20 @@ Valid Map =
 	Return error if  nExit || nPlayerPos > 1 - Feito
 	Map has to be Rectangle - Feito
 	Map has to be closed by Walls (return error if false) - Feito
-	Check if valid path(flood_fill) - Work in Progress
+	Check if valid path(flood_fill) - Feito (Acho eu)
 
 
 Return "Error\n" if error
 
 
 Player Movement:
-Keys: W A S D
+Keys: W S A D
 Directions: UP DOWN LEFT RIGHT
 Movements Counter Display on Shell
 
 Graphic:
-Image Display
+Image Display - Feito
 Smooth Window Management
-ESC Key has to close the Game Window
-Clicking the Cross has to close the game window and quit the program
-Image Usage Mandatory
+ESC Key has to close the Game Window - Feito
+Clicking the Cross has to close the game window and quit the program - Feito parcialmente, ainda nao fecha o programa
+Image Usage Mandatory - Feito

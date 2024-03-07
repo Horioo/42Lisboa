@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 13:13:09 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/06 15:54:32 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:34:03 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,15 @@
 #include "../mlx_linux/mlx.h"
 
 # define ESC 65307
-
 # define LEFT 0xff51
 # define UP 0xff52
 # define RIGHT 0xff53
 # define DOWN 0xff54
 
+# define IMGCNT 7
+
 
 /* Map Check */
-
-typedef struct s_date{
-	void *img;
-	char *addr;
-	int 	bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
 
 typedef struct s_coord
 {
@@ -45,22 +38,19 @@ typedef struct s_coord
 
 typedef struct s_game
 {
+    void *mlx;
+	void *win;
 	char			**map;
 	char			**mapcopy;
 	t_coord			player;
 	t_coord			size;
-	t_data			img;
+	void            **img;
 	int				nCollect;
 	int				collectff;
 	int				nPlayers;
 	int				nExit;
 	int				invalid_char;
 }				t_game;
-
-typedef struct s_vars {
-	void *mlx;
-	void *win;
-}				t_vars;
 
 
 int 		checkber(char *file);
@@ -74,12 +64,11 @@ int			is_square(char **map);
 void		flood_fill(t_game *game, t_coord size, t_coord begin);
 int 		closed_walls(t_game *game);
 int			count_column(char **map);
-void			count_letter(t_game *game, char c);
-void	errormsg(t_game *game, char *str);
-void	pixel_put(t_data *data, int x, int y, int color);
-int		close_game(t_vars *vars);
-int 	key_press(int keycode, t_vars *vars);
-int ft_compare(char *s, char c);
-void put_map_visual(t_game *game, t_vars *vars);
+void		count_letter(t_game *game, char c);
+void	    errormsg(t_game *game, char *str);
+int		    close_game(t_game *game);
+int 	    key_press(int keycode, t_game *game);
+int         ft_compare(char *s, char c);
+void        put_map_visual(t_game *game);
 
 #endif

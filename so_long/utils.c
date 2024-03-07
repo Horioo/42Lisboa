@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 16:08:40 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/06 17:43:09 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:33:56 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,9 @@ t_game	*init_game(char *file)
 	game->size.x = ft_strlen(game->map[0]);
 	game->size.y = count_column(game->map);
 	game->collectff = 0;
+	printf("Teste 1\n");
+	game->mlx = mlx_init();
+	game->win = mlx_new_window(game->mlx, game->size.x * 64, game->size.y * 64, "So_Long");
 	while(game->map[j])
 	{
 		while(game->map[j][i])
@@ -300,32 +303,11 @@ void	errormsg(t_game *game, char *error)
 	exit(1);
 }
 
-void	pixel_put(t_data *data, int x, int y, int color)
+int		close_game(t_game *game)
 {
-	char *dst;
-	
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-int		close_game(t_vars *vars)
-{
-	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_window(game->mlx, game->win);
 	return (0);
 }
 
-int key_press(int keycode, t_vars *vars)
-{
-	if(keycode == ESC)
-		close_game(vars);
-	else if (keycode == UP)
-		ft_printf("UP Clicked\n");
-	else if (keycode == DOWN)
-		ft_printf("DOWN Clicked\n");
-	else if (keycode == LEFT)
-		ft_printf("LEFT Clicked\n");
-	else if (keycode == RIGHT)
-		ft_printf("RIGHT Clicked\n");
-	return (0);
-}
+
 

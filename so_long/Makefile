@@ -13,6 +13,7 @@ RM = rm -f
 FILES = 	so_long.c \
 			utils.c \
 			map_render.c \
+			player_move.c \
 			gnl/get_next_line.c \
 			gnl/get_next_line_utils.c
 
