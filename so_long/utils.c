@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 16:08:40 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/07 17:33:56 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:38:27 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int checkber(char *file)
 	return (0);
 }
 
-// Get Rows for Malloc
 int	colum_maps(char *file)
 {
 	int cnt;
@@ -82,6 +81,9 @@ void	print_map(char **map)
 
 	i = 0;
 	j = 0;
+	ft_printf("\n***********************************\n");
+	ft_printf("\t\tMAP\n");
+	ft_printf("***********************************\n");
 	while(map[i])
 	{
 		while(map[i][j])
@@ -93,6 +95,7 @@ void	print_map(char **map)
 		j = 0;
 		i++;
 	}
+	ft_printf("***********************************\n");
 }
 
 void	count_letter(t_game *game, char c)
@@ -109,7 +112,7 @@ void	count_letter(t_game *game, char c)
 		;
 	else
 	{
-		printf("Invalid Char = %i\n", c);
+		printf("Invalid Char = %c\n", c);
 		game->invalid_char = 1;
 	}
 }
@@ -140,8 +143,8 @@ t_coord		player_pos(char **map)
 		{
 			if(map[j][i] == 'P')
 			{
-				ret->x = i;
-				ret->y = j;
+				ret->x = i * 64;
+				ret->y = j * 64;
 				return (*ret);
 			}
 			i++;
@@ -157,7 +160,7 @@ t_game	*init_game(char *file)
 	int i;
 	int j;
 
-	j = 0;
+	j = -1;
 	game = malloc(sizeof(t_game));
 	if(!game)
 		return (NULL);
@@ -167,18 +170,13 @@ t_game	*init_game(char *file)
 	game->size.x = ft_strlen(game->map[0]);
 	game->size.y = count_column(game->map);
 	game->collectff = 0;
-	printf("Teste 1\n");
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, game->size.x * 64, game->size.y * 64, "So_Long");
-	while(game->map[j])
+	while(game->map[++j])
 	{
-		while(game->map[j][i])
-		{
+		i = -1;
+		while(game->map[j][++i])
 			count_letter(game, game->map[j][i]);
-			i++;
-		}
-		i = 0;
-		j++;
 	}
 	return (game);
 }
@@ -283,9 +281,9 @@ int	check_valid_map(t_game *game)
 		return 0;
 	if(game->nPlayers > 1 || game->nExit > 1 || game->nCollect < 1)
 		return 0;
-	flood_fill(game, game->size, game->player);
+	flood_fill(game, game->size, (t_coord){game->player.x / 64, game->player.y / 64});
 	if(!check_new_map(game->mapcopy))
-		errormsg(game, "Problems on Flood Fill\n");
+		errormsg(game, "Problems on Flood Fill\n", 1);
 	return 1;
 }
 
@@ -295,19 +293,62 @@ void	free_game(t_game *game)
 		free(game->map);
 }
 
-void	errormsg(t_game *game, char *error)
+void	exit_helper2(t_game *game, int status)
 {
-	free_game(game);
-	free(game);
-	ft_printf("%s\n", error);
-	exit(1);
+	if(game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	printf("Window Limpo\n");
+	if(game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	printf("MLX Limpo\n");
+	exit (status);
+}
+
+void	exit_helper(t_game *game, int status)
+{
+	int j;
+
+	if(game->map)
+	{
+		j = 0;
+		while(game->map[j++])
+			free(game->map[j]);
+		free(game->map);
+	}
+	printf("Map Limpo\n");
+	j = 0;
+	if(game->mapcopy)
+	{
+		j = 0;
+		while(game->mapcopy[j++])
+			free(game->mapcopy[j]);
+		free(game->mapcopy);
+	}
+	printf("MapCopy Limpo\n");
+	j = -1;
+	if(game->img)
+	{
+		while(game->img[++j])
+			mlx_destroy_image(game->mlx, game->img[j]);
+		free(game->img);
+	}
+	printf("Img Limpo\n");
+	exit_helper2(game, status);
+}
+
+void	errormsg(t_game *game, char *msg, int status)
+{
+	if(status)
+		ft_printf("Error - ");
+	ft_printf("%s\n", msg);
+	exit_helper(game, status);
 }
 
 int		close_game(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
+	errormsg(game, "Bye Bye >:)", 0);
 	return (0);
 }
-
-
-

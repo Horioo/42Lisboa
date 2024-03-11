@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 13:13:09 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/07 17:34:03 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:14:56 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 #include "../mlx_linux/mlx.h"
 
 # define ESC 65307
-# define LEFT 0xff51
-# define UP 0xff52
-# define RIGHT 0xff53
-# define DOWN 0xff54
+# define LEFT 65361
+# define UP 65362
+# define RIGHT 65363
+# define DOWN 65364
 
 # define IMGCNT 7
 
@@ -65,10 +65,14 @@ void		flood_fill(t_game *game, t_coord size, t_coord begin);
 int 		closed_walls(t_game *game);
 int			count_column(char **map);
 void		count_letter(t_game *game, char c);
-void	    errormsg(t_game *game, char *str);
+void		errormsg(t_game *game, char *msg, int status);
 int		    close_game(t_game *game);
 int 	    key_press(int keycode, t_game *game);
 int         ft_compare(char *s, char c);
 void        put_map_visual(t_game *game);
+void        moves(int x, int y, t_game *game);
+int         check_moves(t_game *game, int y, int x);
+void		exit_helper2(t_game *game, int status);
+void		exit_helper(t_game *game, int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:35:06 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/07 17:35:02 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/11 16:31:43 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,48 +30,32 @@ void put_map_visual(t_game *game)
 {
     int i;
     int j;
+    int k;
     
-    j = 0;
-    while(game->map[j])
+    j = -1;
+    k = 0;
+    init_images(game, k);
+    while(game->map[++j])
     {
-        i = 0;
-        while(game->map[j][i])
+        i = -1;
+        while(game->map[j][++i])
         {
+            mlx_put_image_to_window(game->mlx, game->win, game->img[1], i * 64, j * 64);
             if(game->map[j][i] == 'P')
-            {
-                printf("Player\n");
                 mlx_put_image_to_window(game->mlx, game->win, game->img[0], i * 64, j * 64);
-                printf("Player saida\n");
-            }
             else if(game->map[j][i] == 'E')
             {
-                printf("Exit\n");
                 if(game->nCollect == 0)
-                    mlx_put_image_to_window(game->mlx, game->win, game->img[4], i * 64, j * 64);
-                else
                     mlx_put_image_to_window(game->mlx, game->win, game->img[5], i * 64, j * 64);
-                printf("Exit saida\n");
+                else
+                    mlx_put_image_to_window(game->mlx, game->win, game->img[4], i * 64, j * 64);
             }
             else if(game->map[j][i] == '1')
-            {
-                printf("Parede\n");
                 mlx_put_image_to_window(game->mlx, game->win, game->img[3], i * 64, j * 64);
-                printf("Parede saida\n");
-            }
             else if(game->map[j][i] == 'C')
-            {
-                printf("Collect\n");
                 mlx_put_image_to_window(game->mlx, game->win, game->img[2], i * 64, j * 64);
-                printf("Collect saida\n");
-            }
             else if(game->map[j][i] == '0')
-            {
-                printf("Chao\n");
                 mlx_put_image_to_window(game->mlx, game->win, game->img[1], i * 64, j * 64);
-                printf("Chao Saida\n");
-            }
-            i++;
         }
-        j++;
     }
 }
