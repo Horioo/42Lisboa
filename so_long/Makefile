@@ -6,7 +6,7 @@ MLX = mlx_linux/libmlx.a
 INC = inc/
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -I #-fsanitize=address
 MLX_FLAGS = -lmlx -lXext -lX11
 RM = rm -f
 
@@ -14,6 +14,7 @@ FILES = 	so_long.c \
 			utils.c \
 			map_render.c \
 			player_move.c \
+			enemy.c \
 			gnl/get_next_line.c \
 			gnl/get_next_line_utils.c
 
