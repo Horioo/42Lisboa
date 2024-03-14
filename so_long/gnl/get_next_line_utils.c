@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 18:05:51 by ajorge-p          #+#    #+#             */
-/*   Updated: 2023/11/10 15:16:00 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/14 15:42:41 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ char	*ft_join(char *str, char *buffer)
 	if (buffer[j] == '\n')
 		line[i + j++] = '\n';
 	line[i + j] = '\0';
-	if (str)
-		free(str);
+	free(str);
 	return (line);
 }
 
