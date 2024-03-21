@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 15:54:29 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/14 18:24:32 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:19:10 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	check_moves(t_game *game, int y, int x)
 	{
 		if (game->ncollect == 0)
 			errormsg(game, \
-			"Congratulations you just defeated the your First Dungeon\n", 0);
+			"Congratulations you just defeated your First Dungeon\n", 0);
 		return (0);
 	}
 	if (game->map[x][y] == 'X')

@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 16:08:40 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/14 18:24:19 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:41:34 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_var(t_game *game)
 	game->nexit = 0;
 	game->nplayers = 0;
 	game->invalid_char = 0;
+	game->img = NULL;
 }
 
 t_game	*init_game(char *file)

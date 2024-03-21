@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 13:13:09 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/14 18:52:23 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:18:23 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include "../minilibx-linux/mlx.h"
 
 # define ESC 65307
-# define LEFT 65361
-# define UP 65362
-# define RIGHT 65363
-# define DOWN 65364
+# define LEFT 97
+# define UP 119
+# define RIGHT 100
+# define DOWN 115
 
 # define IMGCNT 12
 

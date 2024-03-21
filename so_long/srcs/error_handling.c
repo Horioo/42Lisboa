@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:34:00 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/03/14 18:24:02 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:21:19 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ int	ft_strcmp(char *s1, char *s2)
 int	check_valid_map(t_game *game)
 {
 	if (!is_square(game->map))
-		return (0);
+		errormsg(game, "Map is not Square\n", 1);
 	if (!closed_walls(game))
-		return (0);
-	if (game->nplayers > 1 || game->nexit > 1 || game->ncollect < 1)
-		return (0);
+		errormsg(game, "Map is not closed by Walls\n", 1);
+	if (game->nplayers > 1)
+		errormsg(game, "Number of Players is more than 1\n", 1);
+	if (game->nexit > 1)
+		errormsg(game, "Number of Exits is more than 1\n", 1);
+	if (game->ncollect < 1)
+		errormsg(game, "Number of Collectables is less than 1\n", 1);
 	flood_fill(game, game->player_x / 64, game->player_y / 64);
 	if (!check_new_map(game->mapcopy))
 		errormsg(game, "Problems on Flood Fill\n", 1);
