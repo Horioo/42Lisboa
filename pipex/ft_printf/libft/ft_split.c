@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:20:19 by ajorge-p          #+#    #+#             */
-/*   Updated: 2023/10/19 13:50:12 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:15:51 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**ft_split(char const *s, char c)
 	tabela = (char **)malloc(sizeof(char *) * (ft_cntwords(s, c) + 1));
 	if (tabela == NULL)
 		return (NULL);
-	while (s[i])
+	while (s && s[i])
 	{
 		while (s[i] == c)
 			i++;
