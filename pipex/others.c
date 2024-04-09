@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 15:27:52 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/05 18:29:13 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/09 12:44:40 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	execve_aux(char *cmd, char **envp)
 	i = -1;
 	status = 0;
 	commands = ft_split(cmd, ' ');
-	if(!commands || !commands[0])
+	if (!commands || !commands[0])
 		free_commands(commands);
 	if (is_path(cmd))
 		path = ft_strdup(cmd);
