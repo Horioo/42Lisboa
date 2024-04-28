@@ -6,15 +6,28 @@
 /*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:18:18 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/17 14:19:52 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:34:48 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	assign_forks(t_philo *philo, t_fork *forks, int position)
+void	assign_forks(t_philo *philo, t_fork *forks, int philo_pos)
 {
+	int	philo_nbr;
+
+	philo_nbr = philo->table->philo_nbr;
 	
+	if(philo->id % 2 == 0)
+	{
+		philo->first_fork =  &forks[philo_pos - 1];
+		philo->second_fork = &forks[(philo_pos + 1) % philo_nbr];
+	}
+	else
+	{ 
+		philo->first_fork =  &forks[(philo_pos + 1) % philo_nbr];
+		philo->second_fork = &forks[philo_pos - 1];
+	}
 }
 
 void	init_philo(t_table *table)
@@ -39,6 +52,7 @@ void	table_init(t_table *table)
 
 	i = -1;
 	table->end_sim = false;
+	table->all_threads_ready = false;
 	table->philos = safe_malloc(sizeof(t_philo) * table->philo_nbr);
 	table->forks = safe_malloc(sizeof(t_fork) * table->philo_nbr);
 	while(++i < table->philo_nbr)

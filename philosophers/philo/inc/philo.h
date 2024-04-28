@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/17 14:12:18 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:34:16 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ struct s_table
 	long		nbr_limit_meals;
 	long		start_sim;
 	bool		end_sim;
+	bool		all_threads_ready;
 	t_fork		*forks;
 	t_philo		*philos;
 };
@@ -83,5 +84,6 @@ void	*safe_malloc(size_t bytes);
 void	safe_thread(pthread_t *thread, void *(*foo)(void *), 
 		void *data, t_opcode opcode);
 void	safe_mutex(t_mtx *mutex, t_opcode opcode);
+void	table_init(t_table *table);
 
 #endif
