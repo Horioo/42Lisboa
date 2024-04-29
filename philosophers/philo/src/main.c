@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:09:38 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/26 17:32:48 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:51:43 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 		//2) Initialization of the Data on table
 		table_init(&table);
 		//3) Dinner Start
-		
+		dinner_start(&table);
 		//4) Leak Solving
 	}
 	else
