@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/29 19:18:45 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:34:36 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum e_philo_status	t_philo_status;
 # define M      "\033[1;35m"   
 # define C      "\033[1;36m"   
 # define W      "\033[1;37m"
-# define DEBUG_MODE 0
+# define DEBUG_MODE 1
 
 enum e_opcode
 {
@@ -99,6 +99,8 @@ struct s_table
 	long		start_sim;
 	bool		end_sim;
 	bool		all_threads_ready;
+	long		nbr_threads_running;
+	pthread_t	monitor;
 	t_mtx		table_mutex;
 	t_mtx		write_mutex;
 	t_fork		*forks;
@@ -122,5 +124,8 @@ long	gettime(t_time_code time_code);
 void	precise_usleep(long usec, t_table *table);
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
 void	dinner_start(t_table *table);
+bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr);
+void	increment_long(t_mtx *mtx, long *value);
+void	*monitor_dinner(void *data);
 
 #endif

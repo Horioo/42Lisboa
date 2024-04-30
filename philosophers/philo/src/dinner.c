@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dinner.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/30 14:47:00 by ajorge-p          #+#    #+#             */
+/*   Updated: 2024/04/30 15:41:29 by ajorge-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 /* 
@@ -15,6 +27,20 @@
 		We want every Philo starting at the same time
 	4 - JOIN every Thread
 */
+
+void	*one_philo(void *data)
+{
+	t_philo *philo;
+	
+	philo = (t_philo *)data;
+	wait_all_threads(philo->table);
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECONDS));
+	increment_long(&philo->table->table_mutex, &philo->table->nbr_threads_running);
+	write_status(TAKE_FIRST_FORK, philo, DEBUG_MODE);
+	while(!simulation_finished(philo->table))
+		usleep(200);
+	return (NULL);
+}
 
 void	thinking(t_philo *philo)
 {
@@ -43,6 +69,8 @@ void	*dinner_simulation(void *data)
 
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECONDS));
+	increment_long(&philo->table->table_mutex, &philo->table->nbr_threads_running);
 	while(!simulation_finished(philo->table))
 	{
 		if(get_bool(&philo->philo_mutex, &philo->full))
@@ -63,19 +91,16 @@ void	dinner_start(t_table *table)
 	if(table->nbr_limit_meals == 0)
 		return ;
 	else if(table->philo_nbr == 1)
-		;//Point 0.1
-	else
+		 safe_thread(&table->philos[0].thread_id, one_philo, &table->philos[0], CREATE);
 	{
 		while(++i < table->philo_nbr)
 			safe_thread(&table->philos[i].thread_id, dinner_simulation, &table->philos[i], CREATE);
 	}
+	safe_thread(&table->monitor, monitor_dinner, table, CREATE);
 	table->start_sim = gettime(MILLISECONDS);
 	set_bool(&table->table_mutex, &table->all_threads_ready, true);
 	i = -1;
 	while(++i < table->philo_nbr)
 		safe_thread(&table->philos[i].thread_id, NULL, NULL, JOIN);
-	// All Threads are created, but we need to update the value of the boolean all_threads_ready
-	// But since its a multi threaded environment we need a mutex so that the variable can be protected
-	// And so we dont have races for shared resources, in this case the bool variable
+	set_bool(&table->table_mutex, &table->end_sim, true);
 }
-

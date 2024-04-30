@@ -13,7 +13,8 @@ FILES = src/dinner.c \
 		src/safe_funcs.c \
 		src/synchro.c \
 		src/utils.c \
-		src/write.c
+		src/write.c \
+		src/monitor.c
 
 SRCS = $(FILES)
 

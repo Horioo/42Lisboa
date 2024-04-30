@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   write.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/30 14:47:20 by ajorge-p          #+#    #+#             */
+/*   Updated: 2024/04/30 14:47:21 by ajorge-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	write_status_debug(t_philo_status status, t_philo *philo, long elapsed)
 {
-	printf("Entrou Write\n");
 	if(TAKE_FIRST_FORK == status && !simulation_finished(philo->table))
 		printf(W"%6ld"RST" %d has taken the 1° fork 🍽"
 			"\t\t\tn°"B"[🍴 %d 🍴]\n"RST, elapsed, philo->id,
@@ -20,7 +31,6 @@ void	write_status_debug(t_philo_status status, t_philo *philo, long elapsed)
 		printf(W"%6ld"RST" %d is thinking 🤔\n", elapsed, philo->id);
 	else if (DIED == status && !simulation_finished(philo->table))
 		printf(R"\t\t💀💀💀 %6ld %d died   💀💀💀\n"RST, elapsed, philo->id);
-	
 }
 
 void	write_status(t_philo_status status, t_philo *philo, bool debug)
@@ -46,6 +56,6 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 			printf("%-6ld %d is thinking\n", elapsed, philo->id);
 		else if(status == DIED)
 			printf(R"%-6ld %d died\n"RST, elapsed, philo->id);
-		safe_mutex(&philo->table->write_mutex, UNLOCK);
 	}
+	safe_mutex(&philo->table->write_mutex, UNLOCK);
 }
