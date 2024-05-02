@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/30 15:34:36 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:55:48 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 
 // ./philo 5 800 200 200 [5]
 // ./phile nbr_philo time_to_die time_to_eat time_to_sleep [nbr_of_meals_eaten]
+// Se o time to die for maior que 
+// 2(Time_to_eat ou time_to_sleep)(Pares) 
+// 3(Time_to_eat ou time_to_sleep)(Impares)
+
 typedef pthread_mutex_t		t_mtx;
 typedef struct s_fork		t_fork;
 typedef struct s_philo		t_philo;
@@ -41,7 +45,7 @@ typedef enum e_philo_status	t_philo_status;
 # define M      "\033[1;35m"   
 # define C      "\033[1;36m"   
 # define W      "\033[1;37m"
-# define DEBUG_MODE 1
+# define DEBUG_MODE 0
 
 enum e_opcode
 {
@@ -107,25 +111,54 @@ struct s_table
 	t_philo		*philos;
 };
 
-void	error_exit(char *error);
-void	parsing(t_table *table, char **av);
-void	*safe_malloc(size_t bytes);
-void	safe_thread(pthread_t *thread, void *(*foo)(void *), 
-		void *data, t_opcode opcode);
-void	safe_mutex(t_mtx *mutex, t_opcode opcode);
-void	table_init(t_table *table);
-bool	simulation_finished(t_table *table);
+/* Dinner */
+
+void	thinking(t_philo *philo, bool pre_sim);
+void	dinner_start(t_table *table);
+
+/* Get Set */
+
 long	get_long(t_mtx *mutex, long *value);
 void	set_long(t_mtx *mutex, long *dest, long value);
 bool	get_bool(t_mtx *mutex, bool *value);
 void	set_bool(t_mtx *mutex, bool *dest, bool value);
+bool	simulation_finished(t_table *table);
+
+/* Init */
+
+void	table_init(t_table *table);
+
+/* Monitor */
+
+void	*monitor_dinner(void *data);
+
+/* Parsing */
+
+void	parsing(t_table *table, char **av);
+
+/* Safe_Funcs */
+
+void	*safe_malloc(size_t bytes);
+void	safe_thread(pthread_t *thread, void *(*foo)(void *), 
+			void *data, t_opcode opcode);
+void	safe_mutex(t_mtx *mutex, t_opcode opcode);
+
+/* Synchro */
+
 void	wait_all_threads(t_table *table);
-long	gettime(t_time_code time_code);
-void	precise_usleep(long usec, t_table *table);
-void	write_status(t_philo_status status, t_philo *philo, bool debug);
-void	dinner_start(t_table *table);
 bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr);
 void	increment_long(t_mtx *mtx, long *value);
-void	*monitor_dinner(void *data);
+void	dsynchronize_philos(t_philo *philo);
+
+/* Utils */
+
+long	gettime(t_time_code time_code);
+void	error_exit(char *error);
+void	precise_usleep(long usec, t_table *table);
+void	clean(t_table *table);
+
+/* Write */
+
+void	write_status(t_philo_status status, t_philo *philo, bool debug);
 
 #endif

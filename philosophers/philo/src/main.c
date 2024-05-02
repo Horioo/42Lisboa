@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:09:38 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/04/30 14:47:09 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:44:22 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 int	main(int ac, char **av)
 {
 	t_table	table;
-	if(ac == 5 || ac == 6)
+
+	if (ac == 5 || ac == 6)
 	{
 		parsing(&table, av);
-
-		//2) Initialization of the Data on table
 		table_init(&table);
-		//3) Dinner Start
 		dinner_start(&table);
-		//4) Leak Solving
+		clean(&table);
 	}
 	else
 		error_exit("Wrong Input:\n"
-		G"Correct is: ./philo 5 800 200 200 [5]\n"RST);
+			G"Correct is: ./philo 5 800 200 200 [5]\n"RST);
 }
