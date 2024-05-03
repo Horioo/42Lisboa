@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:43:19 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/02 17:46:07 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:25:14 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	parsing(t_table *table, char **av)
 	table->philo_nbr = ft_atol(av[1]);
 	if (table->philo_nbr > 200)
 	{
-		printf(R"Max Philos Reached\n"RST);
+		printf(R "Max Philos Reached\n"RST);
 		exit(EXIT_FAILURE);
 	}
 	table->time_to_die = ft_atol(av[2]) * 1000;

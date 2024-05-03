@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/02 17:55:48 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:04:47 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <stdbool.h>
-
 # include <sys/time.h>
 # include <limits.h>
 # include <errno.h>
@@ -45,7 +44,7 @@ typedef enum e_philo_status	t_philo_status;
 # define M      "\033[1;35m"   
 # define C      "\033[1;36m"   
 # define W      "\033[1;37m"
-# define DEBUG_MODE 0
+# define DEBUG_MODE 1
 
 enum e_opcode
 {
@@ -139,7 +138,7 @@ void	parsing(t_table *table, char **av);
 /* Safe_Funcs */
 
 void	*safe_malloc(size_t bytes);
-void	safe_thread(pthread_t *thread, void *(*foo)(void *), 
+void	safe_thread(pthread_t *thread, void *(*foo)(void *),
 			void *data, t_opcode opcode);
 void	safe_mutex(t_mtx *mutex, t_opcode opcode);
 

@@ -2,7 +2,7 @@ NAME = philo
 
 INC = inc/
 
-CC = cc -Wall -Werror -Wextra
+CC = cc -Wall -Werror -Wextra -fsanitize=address
 RM = rm -f
 
 FILES = src/dinner.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe_funcs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:27:14 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/02 17:47:06 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:03:25 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	handle_error_mutex(int status, t_opcode opcode)
 	else if (status == EINVAL && opcode == INIT)
 		error_exit("The value specified by attr is invalid.");
 	else if (status == EDEADLK)
-		error_exit("A deadlock would occur if the thread" 
+		error_exit("A deadlock would occur if the thread"
 			"blocked waiting for mutex.");
 	else if (status == EPERM)
 		error_exit("The current thread does not hold a lock on mutex.");
@@ -77,7 +77,7 @@ void	handle_error_thread(int status, t_opcode opcode)
 			"thread specifies the calling thread.\n");
 }
 
-void	safe_thread(pthread_t *thread, void *(*foo)(void *), 
+void	safe_thread(pthread_t *thread, void *(*foo)(void *),
 		void *data, t_opcode opcode)
 {
 	if (opcode == CREATE)
