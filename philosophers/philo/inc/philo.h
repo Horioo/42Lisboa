@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/03 12:04:47 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:07:25 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ struct s_table
 	long		start_sim;
 	bool		end_sim;
 	bool		all_threads_ready;
+	bool		error;
 	long		nbr_threads_running;
 	pthread_t	monitor;
 	t_mtx		table_mutex;
@@ -152,7 +153,7 @@ void	dsynchronize_philos(t_philo *philo);
 /* Utils */
 
 long	gettime(t_time_code time_code);
-void	error_exit(char *error);
+void	error_exit(t_table *table, char *error);
 void	precise_usleep(long usec, t_table *table);
 void	clean(t_table *table);
 

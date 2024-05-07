@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:29:38 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/03 23:26:23 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:09:54 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ long	gettime(t_time_code time_code)
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		error_exit("Error on GTOD");
+		printf("Error on GTOD");
 	if (time_code == MILLISECONDS)
 		return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	else if (time_code == MICROSECONDS)
 		return ((tv.tv_sec * 1000000) + tv.tv_usec);
 	else
-		error_exit("Wrong input to gettime");
+		printf("Wrong input to gettime");
 	return (42);
 }
 
@@ -48,10 +48,10 @@ void	precise_usleep(long usec, t_table *table)
 	}
 }
 
-void	error_exit(char *error)
+void	error_exit(t_table *table, char *error)
 {
 	printf(R "%s"RST, error);
-	exit(EXIT_FAILURE);
+	table->error = true;
 }
 
 void	clean(t_table *table)

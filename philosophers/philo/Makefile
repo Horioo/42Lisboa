@@ -30,7 +30,6 @@ clean:
 
 fclean:		clean
 				@$(RM) $(NAME)
-				@$(RM) *.o
 				@echo "$(NAME) deleted"
 
 re:			fclean all

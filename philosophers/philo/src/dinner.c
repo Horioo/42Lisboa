@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:47:00 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/03 12:03:07 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:02:28 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,6 @@ void	eat(t_philo *philo)
 	philo->meals_counter++;
 	write_status(EATING, philo, DEBUG_MODE);
 	precise_usleep(philo->table->time_to_eat, philo->table);
-	if (philo->table->nbr_limit_meals > 0
-		&& philo->meals_counter == philo->table->nbr_limit_meals)
-		set_bool(&philo->philo_mutex, &philo->full, true);
 	safe_mutex(&philo->first_fork->fork, UNLOCK);
 	safe_mutex(&philo->second_fork->fork, UNLOCK);
 }
@@ -81,6 +78,9 @@ void	*dinner_simulation(void *data)
 			break ;
 		eat(philo);
 		write_status(SLEEPING, philo, DEBUG_MODE);
+		if (philo->table->nbr_limit_meals > 0
+			&& philo->meals_counter == philo->table->nbr_limit_meals)
+			set_bool(&philo->philo_mutex, &philo->full, true);
 		precise_usleep(philo->table->time_to_sleep, philo->table);
 		thinking(philo, false);
 	}
