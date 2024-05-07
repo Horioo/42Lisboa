@@ -6,7 +6,11 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:47:00 by ajorge-p          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/07 14:02:28 by ajorge-p         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/07 00:04:21 by ajorge-p         ###   ########.fr       */
+>>>>>>> 212ef45d1c26f774af9eef06cd9ceb72de192af7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +86,9 @@ void	*dinner_simulation(void *data)
 			&& philo->meals_counter == philo->table->nbr_limit_meals)
 			set_bool(&philo->philo_mutex, &philo->full, true);
 		precise_usleep(philo->table->time_to_sleep, philo->table);
+		if (philo->table->nbr_limit_meals > 0
+			&& philo->meals_counter == philo->table->nbr_limit_meals)
+			set_bool(&philo->philo_mutex, &philo->full, true);
 		thinking(philo, false);
 	}
 	return (NULL);
