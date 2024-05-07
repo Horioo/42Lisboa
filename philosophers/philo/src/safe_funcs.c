@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe_funcs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:27:14 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/03 12:03:25 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:41:17 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	handle_error_thread(int status, t_opcode opcode)
 	else if (status == EDEADLK)
 		error_exit("A deadlock was detected or the value of"
 			"thread specifies the calling thread.\n");
+	return ;
 }
 
 void	safe_thread(pthread_t *thread, void *(*foo)(void *),
@@ -88,4 +89,5 @@ void	safe_thread(pthread_t *thread, void *(*foo)(void *),
 		handle_error_thread(pthread_detach(*thread), opcode);
 	else
 		error_exit("Wrong opcode for thread\n");
+	return ;
 }

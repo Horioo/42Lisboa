@@ -2,7 +2,7 @@ NAME = philo
 
 INC = inc/
 
-CC = cc -Wall -Werror -Wextra
+CC = cc -Wall -Werror -Wextra #-fsanitize=thread
 
 FILES = src/dinner.c \
 		src/get_set.c \

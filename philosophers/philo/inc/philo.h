@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 12:06:37 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/07 15:07:25 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:02:30 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef enum e_philo_status	t_philo_status;
 # define M      "\033[1;35m"   
 # define C      "\033[1;36m"   
 # define W      "\033[1;37m"
-# define DEBUG_MODE 1
+# define DEBUG_MODE 0
 
 enum e_opcode
 {
@@ -102,7 +102,6 @@ struct s_table
 	long		start_sim;
 	bool		end_sim;
 	bool		all_threads_ready;
-	bool		error;
 	long		nbr_threads_running;
 	pthread_t	monitor;
 	t_mtx		table_mutex;
@@ -134,7 +133,7 @@ void	*monitor_dinner(void *data);
 
 /* Parsing */
 
-void	parsing(t_table *table, char **av);
+int		parsing(t_table *table, char **av);
 
 /* Safe_Funcs */
 
@@ -153,7 +152,7 @@ void	dsynchronize_philos(t_philo *philo);
 /* Utils */
 
 long	gettime(t_time_code time_code);
-void	error_exit(t_table *table, char *error);
+void	error_exit(char *error);
 void	precise_usleep(long usec, t_table *table);
 void	clean(t_table *table);
 

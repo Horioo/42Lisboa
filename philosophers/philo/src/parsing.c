@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:43:19 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/07 15:09:10 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:04:43 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_digit(char c)
 	return (c >= '0' && c <= '9');
 }
 
-long	ft_atol(t_table *table, char *str)
+long	ft_atol(char *str)
 {
 	long	ret;
 	int		i;
@@ -31,15 +31,19 @@ long	ft_atol(t_table *table, char *str)
 	i = 0;
 	while (is_space(str[i]))
 		i++;
-	if (str[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			error_exit("The Numbers can't be Negative");
 		i++;
+	}
 	while (is_digit(str[i]))
 	{
 		ret = ret * 10 + str[i++] - '0';
 		if (ret > INT_MAX)
 		{
-			error_exit(table, "Value bigger than INT_MAX\n");
-			return (ret);
+			error_exit("Value bigger than INT_MAX\n");
+			return (-1);
 		}
 	}
 	return (ret);
@@ -51,16 +55,16 @@ int	check_sign_chars(char **av)
 	int	j;
 
 	j = 1;
-	while(av[j])
+	while (av[j])
 	{
 		i = 0;
-		while(av[j][i])
+		while (av[j][i])
 		{
-			if(av[j][i] == '+' && i == 0)
+			if (av[j][i] == '+' && i == 0)
 				;
-			else if(av[j][i] == '-')
+			else if (av[j][i] == '-')
 				return (1);
-			else if(!is_digit(av[j][i]) && av[j][i])
+			else if (!is_digit(av[j][i]) && av[j][i])
 				return (1);
 			i++;
 		}
@@ -69,31 +73,31 @@ int	check_sign_chars(char **av)
 	return (0);
 }
 
-void	parsing(t_table *table, char **av)
+int	parsing(t_table *table, char **av)
 {
-	table->error = false;
-	if(check_sign_chars(av))
+	if (check_sign_chars(av))
 	{
-		error_exit(table, "Error on Parsing\n");
-		return ;
+		printf(R "Error on Sign or Chars\n");
+		return (1);
 	}
-	table->philo_nbr = ft_atol(table, av[1]);
+	table->philo_nbr = ft_atol(av[1]);
 	if (table->philo_nbr > 200)
 	{
-		error_exit (table, "Max Philos Reached\n");
-		return ;
+		printf(R "Max Philos Reached\n"RST);
+		return (1);
 	}
-	table->time_to_die = ft_atol(table, av[2]) * 1000;
-	table->time_to_eat = ft_atol(table, av[3]) * 1000;
-	table->time_to_sleep = ft_atol(table, av[4]) * 1000;
+	table->time_to_die = ft_atol(av[2]) * 1000;
+	table->time_to_eat = ft_atol(av[3]) * 1000;
+	table->time_to_sleep = ft_atol(av[4]) * 1000;
 	if (table->time_to_die < 60000 || table->time_to_eat 
-	< 60000 || table->time_to_sleep < 60000)
+		< 60000 || table->time_to_sleep < 60000)
 	{
-		error_exit(table, "Timers have to be bigger than 60ms\n");
-		return ;
+		error_exit("Error on Timers\n");
+		return (1);
 	}
 	if (av[5])
-		table->nbr_limit_meals = ft_atol(table, av[5]);
+		table->nbr_limit_meals = ft_atol(av[5]);
 	else
 		table->nbr_limit_meals = -1;
+	return (0);
 }
