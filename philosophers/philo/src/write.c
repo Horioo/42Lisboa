@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:47:20 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/03 12:04:09 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:39:07 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 {
 	long	elapsed;
 
+	safe_mutex(&philo->table->write_mutex, LOCK);
 	elapsed = gettime(MILLISECONDS) - philo->table->start_sim;
 	if (get_bool(&philo->philo_mutex, &philo->full))
 		return ;
-	safe_mutex(&philo->table->write_mutex, LOCK);
 	if (debug)
 		write_status_debug(status, philo, elapsed);
 	else if (!simulation_finished(philo->table))

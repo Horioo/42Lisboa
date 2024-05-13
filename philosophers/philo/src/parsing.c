@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:43:19 by ajorge-p          #+#    #+#             */
-/*   Updated: 2024/05/07 18:04:43 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:27:23 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	parsing(t_table *table, char **av)
 		return (1);
 	}
 	table->philo_nbr = ft_atol(av[1]);
-	if (table->philo_nbr > 200)
+	if (table->philo_nbr > 200 || table->philo_nbr == -1)
 	{
 		printf(R "Max Philos Reached\n"RST);
 		return (1);
