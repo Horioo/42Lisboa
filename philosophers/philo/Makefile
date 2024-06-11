@@ -2,7 +2,7 @@ NAME = philo
 
 INC = inc/
 
-CC = cc -Wall -Werror -Wextra #-fsanitize=address
+CC = cc -Wall -Werror -Wextra -fsanitize=address
 
 FILES = src/dinner.c \
 		src/get_set.c \
