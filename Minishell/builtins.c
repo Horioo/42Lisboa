@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/11 17:44:09 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:14:53 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	builtin_pwd(void)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void	builtin_env(t_amb *env)
+void	builtin_env(t_env *env)
 {
 	int i;
 
@@ -95,6 +95,41 @@ int		ft_isnumber(char *str)
 	return (1);
 }
 
+typedef enum e_err_msg
+{
+	CMD_NOT_FOUND,
+	NO_FILE,
+	PERM_DENIED,
+	AMBIGOUS_MSG,
+	TOO_MANY_ARGS,
+	NUM_REQUIRED,
+} err_msg;
+
+typedef struct t_error
+{
+	err_msg type;
+	char *msg;
+} s_error;
+
+
+//Precisei de mudar o tipo da funcao ft_putstr_fd para int devido aos returns
+
+int		print_err(s_error err)
+{
+	if(err.type == CMD_NOT_FOUND)
+		return(ft_putstr_fd(err.msg, 2), ft_putstr_fd(": command not found\n", 2));
+	else if (err.type == NO_FILE)
+		return(ft_putstr_fd(err.msg, 2), ft_putstr_fd(": No such file or directory\n", 2));
+	else if (err.type == PERM_DENIED)
+		return(ft_putstr_fd(err.msg, 2), ft_putstr_fd(": Permission denied\n", 2));
+	else if (err.type == AMBIGOUS_MSG)
+		return(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(err.msg, 2), ft_putstr_fd(" ambiguous redirect\n", 2));
+	else if(err.type == TOO_MANY_ARGS)
+		return(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(err.msg, 2), ft_putstr_fd(" too many arguments\n", 2));
+	else if(err.type == NUM_REQUIRED)
+		return(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(err.msg, 2), ft_putstr_fd(" numeric argument required\n", 2));
+}
+
 void ignore_space_set_sign(char *str, int *i, int *sign)
 {
 	while(str[*i] && str[*i] == ' ')
@@ -107,7 +142,7 @@ void ignore_space_set_sign(char *str, int *i, int *sign)
 	}
 }
 
-int		exit_atoi(char *str)
+int		exit_atoi(t_cmd *ms, char *str)
 {
 	int i;
 	int sign;
@@ -120,23 +155,23 @@ int		exit_atoi(char *str)
 	ignore_space_set_sign(str, &i, &sign);
 	if(!ft_isnumber(str + i))
 	{
-		e_status = //Print_err - Mensagem de erro (bash: exit: (string): numeric argument required) / exit: (number) = cmd[0] e cmd[1]
-		//Limpar o Minishell e depois exit com a status_exit
+		e_status = print_err((s_error){NUM_REQUIRED, str});
+		(free_cmd(ms), exit(e_status));
 	}
 	while(str[i])
 	{
 		res = res * 10 + (str[i] + '0');
 		if(res > LONG_MAX)
 		{
-			e_status = //Print_err - Mensagem de erro (bash: exit: (number): numeric argument required) / exit: (number) = cmd[0] e cmd[1]
-			//Limpar o Minishell e depois exit com a status_exit
+			e_status = print_err((s_error){NUM_REQUIRED, str});
+			(free_cmd(ms), exit(e_status));
 		}
 		i++;
 	}
 	return((res * sign) % 256);
 }
 
-void	builtin_exit(char **cmd)
+void	builtin_exit(t_cmd *ms, char **cmd)
 {
 	int e_status;
 
@@ -145,13 +180,20 @@ void	builtin_exit(char **cmd)
 	{
 		if(cmd[1] && ft_isnumber(cmd[1]))
 		{
-			e_status = //Print_err - Mensagem de erro (bash: exit: too many arguments)
-			//Limpar o Minishell e depois exit com a status_exit
+			e_status = print_err((s_error){TOO_MANY_ARGS, cmd[1]});
+			(free_cmd(ms), exit(e_status));
 		}
 		else
-			e_status = exit_atoi(cmd[0]);
+			e_status = exit_atoi(ms, cmd[0]);
 	}
 	clean_minishell();
 	exit(e_status);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void	builtin_unset()
+{
+	
 }
 
