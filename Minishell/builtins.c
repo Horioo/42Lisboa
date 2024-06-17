@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/12 17:14:53 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/14 18:27:53 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	builtin_echo(char **cmd)
 {
 	int n_flag;
 
-	
+
 	n_flag = 0;
 	if(cmd[1] && ft_strncmp(cmd[1], "-n", 2))
 		n_flag = 1;
@@ -44,7 +44,7 @@ void	builtin_echo(char **cmd)
 	{
 		handle_n(cmd, 1);
 		printf("\n");
-	}	
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ int		exit_atoi(t_cmd *ms, char *str)
 	int sign;
 	unsigned long res;
 	int e_status;
-	
+
 	sign = 1;
 	i = 0;
 	res = 0;
@@ -175,7 +175,7 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 {
 	int e_status;
 
-	
+
 	if(cmd[0])
 	{
 		if(cmd[1] && ft_isnumber(cmd[1]))
@@ -186,14 +186,198 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 		else
 			e_status = exit_atoi(ms, cmd[0]);
 	}
-	clean_minishell();
+	free_cmd(ms);
 	exit(e_status);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void	builtin_unset()
+int	ft_strcmp(char *s1, char *s2)
 {
-	
+	unsigned int	i;
+
+	if (s1 && s2)
+	{
+		i = 0;
+		while (s1[i] == s2[i] && (s1[i] != '\0' && s2[i] != '\0'))
+			i++;
+		return (s1[i] - s2[i]);
+	}
+	return (1);
+}
+
+int	size_of_env(char **env)
+{
+	int i;
+
+	i = 0;
+	while(env && env[i])
+		i++;
+	return (i);
+}
+
+int	is_sorted(char **env, int size)
+{
+	int i;
+
+	i = 0;
+	while(i < size - 1)
+	{
+		if(ft_strcmp(env[i], env[i + 1]) > 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+// void	print_matrix(char **mtx)
+// {
+// 	int i = 0;
+// 	while(mtx[i])
+// 	{
+// 		int j = 0;
+// 		printf("mtx[%d] = ", i);
+// 		while(mtx[i][j])
+// 		{
+// 			printf("%c", mtx[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// }
+
+void	sort_env(char **env, int size)
+{
+	int i;
+	int j;
+	char *tmp;
+	int size_env;
+
+	size_env = size_of_env(env);
+	if(is_sorted(env, size_env))
+		return ;
+	i = 0;
+	while(i < size_env - 1)
+	{
+		j = 0;
+		while(j < size_env - 1 - i)
+		{
+			if(ft_strcmp(env[j], env[j + 1]) > 0)
+			{
+				tmp = env[j];
+				env[j] = env[j + 1];
+				env[j + 1] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}	
+}
+
+void	print_env(t_env *env)
+{
+	int	i;
+	int j;
+	int first_equal;
+	i = 0;
+
+	sort_env(env->envp, size_of_env(env->envp));
+	while(env->envp[i])
+	{
+		printf("declare -x ");
+		j = -1;
+		first_equal = 1;
+		while(env->envp[i][++j])
+		{
+			printf("%c", env->envp[i][j]);
+			if(env->envp[i][j] == '=' && first_equal)
+			{
+				printf("\"");
+				first_equal = 0;
+			}
+		}
+		if(ft_strchr(env->envp[i], '='))
+			printf("\"");
+		printf("\n");
+		i++;
+	}
+}
+
+void write_to_env(char **write, t_env *env)
+{
+	t_env *env_copy;
+	int i;
+	int j;
+
+	env_copy = get_env(env->envp);
+	i = 0;
+	j = 0;
+	while(env_copy->envp[i] && env_copy->envp[i])
+		i++;
+	while(write[j])
+	{
+		printf("write[%d] = %s\n", j, write[j]);
+		if(write[j + 1] == NULL)
+			env_copy->envp[i++] = write[j++];
+		else
+		{
+			write[j] = ft_strjoin(write[j], "=");
+			env_copy->envp[i] = malloc(strlen(write[j]) + strlen(write[j + 1]) + 1);
+			env_copy->envp[i] = ft_strjoin(write[j], write[j + 1]);
+			j = j + 2;
+			i++;
+		}
+	}
+	env_copy->envp[i] = '\0';
+	env->envp = env_copy->envp;
+}
+
+void	free_dp(char **var)
+{
+	int i;
+
+	i = 0;
+	while(var[i])
+	{
+		free(var[i]);
+		i++;
+	}
+	free(var);
+}
+
+void	export_error(t_cmd *cmd, int i, char **str)
+{
+	write(2, "minishell: export: \'", 21);
+	write(2, cmd->cmd[i], ft_strlen(cmd->cmd[i]));
+	write(2, "\': not a valid identifier\n", 26);
+	free_dp(str);
+	exit(1);
+	//Atualizar a global variable do status
+}
+
+//Falta dar handle caso seja KOW= , ele nao printa o = no env depois
+void	builtin_export(t_env *env, t_cmd *cmd)
+{
+	char **env_write;
+	int i;
+
+	if(!cmd->cmd[1])
+	{
+		print_env(env);
+		return ;
+	}
+	i = 1;
+	while(cmd->cmd && cmd->cmd[i])
+	{
+		env_write = ft_split(cmd->cmd[i], '=');
+		if(!env_write)
+			(free_cmd(cmd), exit(1));
+		if(cmd->cmd[i][0] == '=' || ft_isdigit(cmd->cmd[i][0]))
+			export_error(cmd, i, env_write);
+		else
+			write_to_env(env_write, env);
+		i++;
+	}
 }
 

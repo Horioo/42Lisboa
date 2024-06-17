@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:23:52 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/06 17:19:43 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:32:20 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_matrix(char **mtx)
+{
+	int i = 0;
+	while(mtx[i])
+	{
+		int j = 0;
+		printf("mtx[%d] = ", i);
+		while(mtx[i][j])
+		{
+			printf("%c", mtx[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
 
 int main (int argc, char **argv, char **envp)
 {
@@ -28,8 +45,10 @@ int main (int argc, char **argv, char **envp)
         input = readline("DrunkShell \U0001F37A> ");
         add_history(input);
         cmd = lexer_args(input, env->envp);
-        pipes_exec(cmd, env);
+		print_matrix(cmd->cmd);
+        //pipes_exec(cmd, env);
         //check_cmd(cmd, env->envp);
+		builtin_export(env, cmd);
         free(input);
     }
     return (0);

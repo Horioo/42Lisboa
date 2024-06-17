@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:58:43 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/11 18:01:25 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:55:59 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,8 @@ void    setup_pipes(t_cmd *cmd);
 void    remove_redirection(t_cmd *cmd, int i);
 void    redirect_in(t_cmd *cmd, int i);
 void    redirections(t_cmd *cmd);
+
+//builtins
+void	builtin_export(t_env *env, t_cmd *cmd);
 
 #endif

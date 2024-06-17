@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+         #
+#    By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 12:32:15 by luiberna          #+#    #+#              #
-#    Updated: 2024/06/06 16:30:22 by luiberna         ###   ########.fr        #
+#    Updated: 2024/06/14 15:56:23 by ajorge-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = env.c exec.c free.c init.c minishell.c parsing.c pipes.c redirect.c
+SRCS = env.c exec.c free.c init.c minishell.c parsing.c pipes.c redirect.c builtins.c
 
 CC = cc
 
