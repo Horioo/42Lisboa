@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 13:05:45 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/17 18:54:13 by ajorge-p         ###   ########.fr       */
+/*   Created: 2023/10/06 18:26:59 by luiberna          #+#    #+#             */
+/*   Updated: 2024/06/17 19:07:02 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int	i;
+	size_t		i;
+	size_t		j;
+	char		*s3;
 
+	j = 0;
 	i = 0;
-	while (s && s[i])
+	s3 = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (s3 == NULL)
+		return (NULL);
+	while (s1[i])
 	{
+		s3[i] = s1[i];
 		i++;
 	}
-	return (i);
+	while (s2[j])
+	{
+		s3[i + j] = s2[j];
+		j++;
+	}
+	s3[i + j] = '\0';
+	return ((char *)s3);
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%zu", ft_strlen("abcdefg"));
-	return (0);
-}
-*/
