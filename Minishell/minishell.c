@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:23:52 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/14 17:32:20 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:23:22 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int main (int argc, char **argv, char **envp)
 		print_matrix(cmd->cmd);
         //pipes_exec(cmd, env);
         //check_cmd(cmd, env->envp);
+		builtin_unset(env, cmd);
 		builtin_export(env, cmd);
         free(input);
     }

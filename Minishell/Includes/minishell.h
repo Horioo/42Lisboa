@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:58:43 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/14 15:55:59 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:19:13 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void    redirections(t_cmd *cmd);
 
 //builtins
 void	builtin_export(t_env *env, t_cmd *cmd);
+void	builtin_unset(t_env *env, t_cmd *cmd);
 
 #endif

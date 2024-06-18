@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/17 19:16:24 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:40:07 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,15 +222,12 @@ void	sort_env(char **env, int size)
 	int i;
 	int swapping;
 	char *tmp;
-	int size_env;
-
-	size_env = size_of_env(env);
 	swapping = 1;
 	while(swapping)
 	{
 		i = 0;
 		swapping = 0;
-		while(i < size_env - 1)
+		while(i < size - 1)
 		{
 			if(ft_strcmp(env[i], env[i + 1]) > 0)
 			{
@@ -241,8 +238,9 @@ void	sort_env(char **env, int size)
 			}
 			i++;
 		}
-		size_env--;
+		size--;
 	}	
+	
 }
 
 void	print_env(t_env *env)
@@ -317,22 +315,24 @@ char **var_exists(char *var, char *value, char **env)
 	int ret;
 
 	i = 0;
-	while(env[i])
+	while(env && env[i])
 	{
 		if(!ft_strncmp(var, env[i], ft_strlen(var)) && !ft_strncmp(value, env[i] + ft_strlen(var), ft_strlen(value)))
 			return env;
 		else if(!ft_strncmp(var, env[i], ft_strlen(var)) && ft_strncmp(value, env[i] + ft_strlen(var), ft_strlen(value)) > 0)
 		{
+			free(env[i]);
 			env[i] = ft_strjoin(var, value);
 			return env;	
 		}
 		i++;
 	}
 	env[i] = ft_strjoin(var, value);
+	env[++i] = NULL;
 	return (env);
 }
 
-void funca(t_env *env, t_cmd *cmd, int i)
+void export(t_env *env, t_cmd *cmd, int i)
 {
 	int j;
 	int eq;
@@ -351,14 +351,33 @@ void funca(t_env *env, t_cmd *cmd, int i)
 		cmd->cmd[i][eq] = '=';
 		env->envp = var_exists(var, cmd->cmd[i] + eq, env->envp);
 	}
-	
 	free(var);
 }
+//Search until Equal
+int sue(char *str, char c)
+{
+	int i;
 
-//Da SegFault depois de dar export 2 vezes, ainda nao percebi o porque
+	i = 0;
+	while(str && str[i] && str[i] != '=')
+	{
+		if(str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	error_handler(char *cmd)
+{
+	if(!cmd[0] || cmd[0] == '=' || (cmd[0] == '_' && cmd[1] == '=') || ft_isdigit(cmd[0]) || sue(cmd, '-') || sue(cmd, '.') || 
+		sue(cmd, ':') || sue(cmd, ',') || sue(cmd, '\\') || sue(cmd, '!') || sue(cmd, '?'))
+		return 1;
+	return 0;
+}
+
 void	builtin_export(t_env *env, t_cmd *cmd)
 {
-	char **env_write;
 	int i;
 
 	if(!cmd->cmd[1])
@@ -369,9 +388,56 @@ void	builtin_export(t_env *env, t_cmd *cmd)
 	i = 1;
 	while(cmd->cmd && cmd->cmd[i])
 	{
-		if(cmd->cmd[i][0] == '=' || ft_isdigit(cmd->cmd[i][0]))
+		if(error_handler(cmd->cmd[i]))
 			export_error(cmd, i, cmd->cmd);
-		funca(env, cmd, i);
+		export(env, cmd, i);
 		i++;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void	unset(t_env *env, char *cmd)
+{
+	int i;
+	int eq;
+
+	i = 0;
+	if(env->envp && env->envp[i])
+	{
+		eq = find_eq(env->envp[i]);
+		while(env->envp[i] && ft_strncmp(cmd, env->envp[i], eq))
+		{
+			i++;
+			eq = find_eq(env->envp[i]);
+		}
+		free(env->envp[i]);
+		env->envp[i] = env->envp[i + 1];
+		i++;
+		while(env->envp[i])
+		{
+			env->envp[i] = env->envp[i + 1];
+			i++;
+		}
+		env->envp[i] = NULL;
+	}
+}
+
+void	builtin_unset(t_env *env, t_cmd *cmd)
+{
+	int i;
+
+	if(!cmd->cmd[1])
+		return ;
+	else
+	{
+		i = 1;
+		while(cmd->cmd && cmd->cmd[i])
+		{
+			if(error_handler(cmd->cmd[i]))
+				export_error(cmd, i, cmd->cmd);
+			unset(env, cmd->cmd[i]);
+			i++;
+		}
 	}
 }
