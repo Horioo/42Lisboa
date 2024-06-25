@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/18 16:40:07 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:37:18 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+///////////////////////////////////////////////////////////////////////////////////
+
+/*Echo Builtin*/
 
 void handle_n(char **cmd, int pos)
 {
@@ -36,7 +39,7 @@ void	builtin_echo(char **cmd)
 
 
 	n_flag = 0;
-	if(cmd[1] && ft_strncmp(cmd[1], "-n", 2))
+	if(cmd[1] && ft_strncmp(cmd[1], "-n", 2) == 0)
 		n_flag = 1;
 	if(n_flag == 1)
 		handle_n(cmd, 2);
@@ -49,10 +52,17 @@ void	builtin_echo(char **cmd)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void	builtin_pwd(void)
+/*PWD Builtin*/
+
+void	builtin_pwd(t_cmd *cmd)
 {
 	char cwd[PATH_MAX];
 
+	if(cmd->cmd[1])
+	{
+		write(2, "Cant use Args\n", 15);
+		return ;
+	}
 	if(getcwd(cwd, PATH_MAX) != NULL)
 		printf("%s\n", cwd);
 	else
@@ -63,6 +73,8 @@ void	builtin_pwd(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+/*ENV Builtin*/
 
 void	builtin_env(t_env *env)
 {
@@ -80,6 +92,8 @@ void	builtin_env(t_env *env)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+/*Exit Builtin*/
 
 int		ft_isnumber(char *str)
 {
@@ -179,19 +193,21 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 
 	if(cmd[0])
 	{
-		if(cmd[1] && ft_isnumber(cmd[1]))
+		if(cmd[1] && !ft_isnumber(cmd[1]))
 		{
 			e_status = print_err((s_error){TOO_MANY_ARGS, cmd[1]});
 			(free_cmd(ms), exit(e_status));
 		}
 		else
-			e_status = exit_atoi(ms, cmd[0]);
+			e_status = exit_atoi(ms, cmd[1]);
 	}
 	free_cmd(ms);
 	exit(e_status);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+/*Export Builtin*/
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -397,6 +413,8 @@ void	builtin_export(t_env *env, t_cmd *cmd)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+/* Unset Builtin*/
+
 void	unset(t_env *env, char *cmd)
 {
 	int i;
@@ -439,5 +457,106 @@ void	builtin_unset(t_env *env, t_cmd *cmd)
 			unset(env, cmd->cmd[i]);
 			i++;
 		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+/*CD BUILTIN*/
+
+int	command_len(char **cmd)
+{
+	int i;
+
+	i = 0;
+	while(cmd && cmd[i])
+		i++;
+	return (i);	
+}
+
+char *find_on_env(char **env, char *tofind)
+{
+	int i;
+	char *ret;
+
+	i = 0;
+	while(env[i])
+	{
+		if(ft_strncmp(env[i], tofind, ft_strlen(tofind)) == 0)
+		{
+			ret = ft_strdup(env[i] + ft_strlen(tofind) + 1);
+			return (ret);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int save_pwd(char *var_to_update, t_env *env)
+{
+	char var[PATH_MAX];
+	int i;
+	char *tmp;
+
+	i = 0;
+	if(getcwd(var, sizeof(var)))
+	{
+		while(env->envp[i] && ft_strncmp(env->envp[i], var_to_update, ft_strlen(var_to_update)) != 0)
+			i++;
+		if(env->envp[i])
+			free(env->envp[i]);
+		env->envp[i] = ft_strdup(var_to_update);
+		tmp = ft_strjoin("=", var);
+		env->envp[i] = ft_strjoin(env->envp[i], tmp);
+		free (tmp);
+	}	
+	return (1);
+}
+
+// Necessario atualizar o PWD e guardar um OLDPWD para o caso de apagarem a pasta onde estavamos a a executar o minishell
+int	exec_cd(char *path, t_env *env)
+{
+	save_pwd("OLDPWD", env);
+	printf("path = %s\n", path);
+	if(chdir(path) == 0 && save_pwd("PWD", env))
+		//Update Global Status para 0
+		printf("CD Efetucado\n");
+	else
+	{
+		if(access(path, F_OK) == -1)
+			write(2, "minishell: cd: no such file or directory\n", 42);
+		else if(access(path, R_OK | W_OK | X_OK) == -1)
+			write(2, "minishell: cd: Permission denied\n", 34);
+		else
+			write(2,"minishell: cd: not a directory\n", 32);
+		write(2, path, ft_strlen(path));
+		write(2, "\n", 1);
+		//Update Global status para 1
+	}
+	return (1);
+}
+
+// Casos possiveis no CD - "cd" / "cd --" / "cd -" / "cd path"
+
+void	builtin_cd(t_env *env, t_cmd *cmd)
+{
+	char *home_path;
+	if(command_len(cmd->cmd) > 2)
+	{
+		write(2, "Minishell: cd: too many arguments\n", 35);
+		//Update Global status para 1 
+		return ;
+	}
+	home_path = find_on_env(env->envp, "HOME");
+	home_path = ft_strjoin(home_path, "/");
+	if(!cmd->cmd[1] && exec_cd(home_path, env))
+		//Update Global Status para 0 e Voltar para tras
+		return ;
+	else
+	{
+		if(ft_strcmp(cmd->cmd[1], "--") == 0 && exec_cd(home_path, env))
+			//Update Global Status para 0 e Voltar para tras
+			return ;
+		exec_cd(cmd->cmd[1], env);
 	}
 }

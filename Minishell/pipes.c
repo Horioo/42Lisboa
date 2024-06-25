@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Pipes.c                                            :+:      :+:    :+:   */
+/*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 20:16:52 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/07 17:12:17 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:01:11 by luiberna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,14 @@ void execve_aux(t_cmd *cmd, t_env *env)
 {
     if (!cmd->cmd || !cmd->cmd[0])
         free(cmd->path);
-    if (execve(cmd->path, cmd->cmd, env->envp) == -1)
+    if (cmd->cmd[0][0] == '/' && (access(cmd->cmd[0], F_OK) == 0))
+    {
+        free(cmd->path);
+        cmd->path = ft_strdup(cmd->cmd[0]);
+    }
+    // if (execve(cmd->path, cmd->cmd, env->envp) == -1) //<-----integrar o exec
+    //     error_msg("Error on execve");
+    if (execute(cmd, env) == -1)
         error_msg("Error on execve");
     exit(1);
 }
@@ -61,6 +68,7 @@ void command_exec(t_cmd *cmd, t_env *env)
     pid = fork();
     if (pid == 0) //Child process
     {
+        redirect_here(cmd);
         if (cmd->fd[0] > 2)
         {
             dup2(cmd->fd[0], STDIN_FILENO); //Redireciona o input do comando anterior
@@ -77,23 +85,23 @@ void command_exec(t_cmd *cmd, t_env *env)
         exit(0);
     }
     else if (pid < 0)
-        error_msg("Erro no fork");
+        error_msg("Erro on fork");
 }
 
 void    setup_pipes(t_cmd *cmd)
 {
     t_cmd *curr;
-    int pipefd[2];
+    int pipe_fd[2];
 
     curr = cmd;
     while (curr)
     {
         if (curr->next)
         {
-            if (pipe(pipefd) == -1)
+            if (pipe(pipe_fd) == -1)
                 error_msg("Error on pipe");
-            curr->fd[1] = pipefd[1];
-            curr->next->fd[0] = pipefd[0];
+            curr->fd[1] = pipe_fd[1];
+            curr->next->fd[0] = pipe_fd[0];
         }
         curr = curr->next;
     }
