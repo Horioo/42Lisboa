@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/25 16:37:18 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:52:58 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,8 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 {
 	int e_status;
 
-
+	printf("Entrou\n");
+	e_status = 0;
 	if(cmd[0])
 	{
 		if(cmd[1] && !ft_isnumber(cmd[1]))
@@ -198,10 +199,12 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 			e_status = print_err((s_error){TOO_MANY_ARGS, cmd[1]});
 			(free_cmd(ms), exit(e_status));
 		}
-		else
+		else if(cmd[1])
 			e_status = exit_atoi(ms, cmd[1]);
 	}
+	printf("Chegou 1\n");
 	free_cmd(ms);
+	printf("Chegou 2\n");
 	exit(e_status);
 }
 
@@ -322,6 +325,22 @@ int find_eq(char *str) {
 	return (0);
 }
 
+char **handle_no_value(char *var, char **env)
+{
+	int i;
+
+	i = 0;
+	while(env && env[i])
+	{
+		if(!ft_strncmp(var, env[i], ft_strlen(var)))
+			return (env);
+		i++;
+	}
+	env[i] = ft_strdup(var);
+	env[++i] = NULL;
+	return (env);
+}
+
 //Vai fazer, se a var ja existir e o valor for igual
 //Se a var ja existir e o valor for diferente
 //Se a var nao existir
@@ -331,11 +350,14 @@ char **var_exists(char *var, char *value, char **env)
 	int ret;
 
 	i = 0;
+	printf("value = %s\n", value);
+	if(!value)
+		return (handle_no_value(var, env));
 	while(env && env[i])
 	{
-		if(!ft_strncmp(var, env[i], ft_strlen(var)) && !ft_strncmp(value, env[i] + ft_strlen(var), ft_strlen(value)))
+		if(!ft_strncmp(var, env[i], ft_strlen(var)) && !ft_strcmp(value, env[i] + ft_strlen(var)))
 			return env;
-		else if(!ft_strncmp(var, env[i], ft_strlen(var)) && ft_strncmp(value, env[i] + ft_strlen(var), ft_strlen(value)) > 0)
+		else if(!ft_strncmp(var, env[i], ft_strlen(var)) && ft_strcmp(value, env[i] + ft_strlen(var))!= 0)
 		{
 			free(env[i]);
 			env[i] = ft_strjoin(var, value);

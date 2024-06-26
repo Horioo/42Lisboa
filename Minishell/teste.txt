@@ -12,3 +12,7 @@ while(cmd != NULL)
     }
     cmd = cmd->prev;
 }
+
+
+Erros: 
+Junho 26 - O Exit esta a dar segfault quando fecha os FDs no free_cmd
