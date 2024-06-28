@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 14:11:10 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/26 15:52:58 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:53:22 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 {
 	int e_status;
 
-	printf("Entrou\n");
 	e_status = 0;
 	if(cmd[0])
 	{
@@ -202,9 +201,7 @@ void	builtin_exit(t_cmd *ms, char **cmd)
 		else if(cmd[1])
 			e_status = exit_atoi(ms, cmd[1]);
 	}
-	printf("Chegou 1\n");
 	free_cmd(ms);
-	printf("Chegou 2\n");
 	exit(e_status);
 }
 
@@ -350,7 +347,6 @@ char **var_exists(char *var, char *value, char **env)
 	int ret;
 
 	i = 0;
-	printf("value = %s\n", value);
 	if(!value)
 		return (handle_no_value(var, env));
 	while(env && env[i])
@@ -437,6 +433,20 @@ void	builtin_export(t_env *env, t_cmd *cmd)
 
 /* Unset Builtin*/
 
+int		unset_exists(t_env *env, char *cmd)
+{
+	int i;
+
+	i = 0;
+	while(env->envp[i])
+	{
+		if(ft_strncmp(cmd, env->envp[i], ft_strlen(cmd)) == 0)
+			return 1;
+		i++;
+	}
+	return 0;
+}
+
 void	unset(t_env *env, char *cmd)
 {
 	int i;
@@ -445,6 +455,8 @@ void	unset(t_env *env, char *cmd)
 	i = 0;
 	if(env->envp && env->envp[i])
 	{
+		if(!unset_exists(env, cmd))
+			return ;
 		eq = find_eq(env->envp[i]);
 		while(env->envp[i] && ft_strncmp(cmd, env->envp[i], eq))
 		{
@@ -539,10 +551,9 @@ int save_pwd(char *var_to_update, t_env *env)
 int	exec_cd(char *path, t_env *env)
 {
 	save_pwd("OLDPWD", env);
-	printf("path = %s\n", path);
 	if(chdir(path) == 0 && save_pwd("PWD", env))
 		//Update Global Status para 0
-		printf("CD Efetucado\n");
+		;
 	else
 	{
 		if(access(path, F_OK) == -1)

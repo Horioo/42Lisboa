@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luiberna <luiberna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 20:16:52 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/20 17:01:11 by luiberna         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:26:18 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,24 +107,47 @@ void    setup_pipes(t_cmd *cmd)
     }
 }
 
+int	is_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "pwd", 4) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "echo", 5) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "export", 8) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "unset", 7) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "env", 4) == 0)
+        return 1;
+    else if (ft_strncmp(cmd, "exit", 5) == 0)
+        return 1;
+	return 0;
+}
+
 void pipes_exec(t_cmd *cmd, t_env *env)
 {
     t_cmd *curr;
 
     setup_pipes(cmd);
     curr = cmd;
-    while (curr)
-    {
-        if (curr->cmd && curr->cmd[0])
-            command_exec(curr, env);
-        curr = curr->next;
-    }
-    close_fds(cmd); //Fecha todos os fds no parent;
-    curr = cmd;
-    while (curr)
-    {
-        if (waitpid(-1, NULL, 0) == -1) //O primeiro -1 define que o wait deve esperar por qualquer child process
-            error_msg("Error on waitpid");
-        curr = curr->next;
-    }
+	while (curr)
+	{
+		if(is_builtin(curr->cmd[0]))
+			execute(curr, env);
+		else if (curr->cmd && curr->cmd[0])
+			command_exec(curr, env);
+		curr = curr->next;
+	}
+	close_fds(cmd); //Fecha todos os fds no parent;
+	curr = cmd;
+	while (curr)
+	{
+		if(is_builtin(curr->cmd[0]))
+			;
+		else if (waitpid(-1, NULL, 0) == -1) //O primeiro -1 define que o wait deve esperar por qualquer child process
+			error_msg("Error on waitpid");
+		curr = curr->next;
+	}
 }
