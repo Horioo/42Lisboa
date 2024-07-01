@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:23:52 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/28 17:21:02 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:30:39 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,11 @@ int main (int argc, char **argv, char **envp)
         input = readline("DrunkShell \U0001F37A> ");
         add_history(input);
         cmd = lexer_args(input, env->envp);
-		while (cmd->next != NULL)
-    cmd = cmd->next;
-while(cmd != NULL)
-{
-    i = 0;
-    while (cmd->cmd[i])
-    {
-        printf("Comando numero:%i, Linha numero %i: %s\n",cmd->nb_cmds, i, cmd->cmd[i]);
-        i++;
-    }
-    cmd = cmd->prev;
-}
-        // if (cmd)
-        // {
-        //     pipes_exec(cmd, env);
-        //     free(input);
-        // }
+        if (cmd)
+        {
+            pipes_exec(cmd, env);
+            free(input);
+        }
         //check_cmd(cmd, env->envp);
     }
     return (0);

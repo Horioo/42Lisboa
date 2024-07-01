@@ -6,7 +6,7 @@
 /*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:58:43 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/24 18:24:29 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:34:54 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,11 @@ void	builtin_exit(t_cmd *ms, char **cmd);
 void	builtin_env(t_env *env);
 void	builtin_pwd(t_cmd *cmd);
 void	builtin_echo(char **cmd);
+
+//Utils
+int	ft_strcmp(char *s1, char *s2);
+int find_eq(char *str);
+void	export_error(t_cmd *cmd, int i, char **str);
+int	error_handler(char *cmd);
 
 #endif

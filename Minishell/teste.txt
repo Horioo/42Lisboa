@@ -15,10 +15,8 @@ while(cmd != NULL)
 
 
 Erros: 
-Junho 26 - O Exit esta a dar segfault quando fecha os FDs no free_cmd
 
-Junho 28 - Caso de Double free no unset
+Junho 28 - Caso de Double free no unset (Nao estou a conseguir replicar o erro)
 		 - echo bonjour | | da segfault
-		 - echo -n -n -nnnn -nnnnm  esta a escrever os 'n' seguintes
 		 - 
 

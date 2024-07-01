@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajorge-p <ajorge-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:24:26 by luiberna          #+#    #+#             */
-/*   Updated: 2024/06/26 15:55:33 by ajorge-p         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:53:26 by ajorge-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void    free_cmd(t_cmd *cmd)
 	if(!cmd)
 		return ;
     curr = cmd;
-    while (curr != NULL)
+    while (cmd != NULL)
     {
         curr = cmd;
         cmd = cmd->next;

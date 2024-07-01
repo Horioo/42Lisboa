@@ -6,14 +6,14 @@
 #    By: ajorge-p <ajorge-p@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/27 12:32:15 by luiberna          #+#    #+#              #
-#    Updated: 2024/06/24 16:27:56 by ajorge-p         ###   ########.fr        #
+#    Updated: 2024/07/01 16:31:21 by ajorge-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = env.c exec.c free.c init.c minishell.c parsing.c pipes.c redirect.c builtins.c
-
+SRCS = env.c exec.c free.c init.c minishell.c parsing.c pipes.c redirect.c builtins.c builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c builtins/export.c builtins/pwd.c builtins/unset.c
+ 
 CC = cc
 
 OBJS = $(SRCS:.c=.o)
